@@ -4,6 +4,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 import org.telegram.telegrambots.bots.TelegramLongPollingBot;
+import org.telegram.telegrambots.meta.api.objects.Message;
 import org.telegram.telegrambots.meta.api.objects.Update;
 
 @Slf4j
@@ -18,7 +19,16 @@ public class TrainingBot extends TelegramLongPollingBot {
 
   @Override
   public void onUpdateReceived(Update update) {
-    // ToDo implements
+    try {
+      if (update.hasMessage()) {
+        Message message = update.getMessage();
+        if (message.hasText() || message.hasLocation()) {
+          // todo handleIncomingMessage(message);
+        }
+      }
+    } catch (Exception e) {
+      LOG.error(e.getMessage(), e);
+    }
   }
 
   @Override
