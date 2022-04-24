@@ -11,3 +11,6 @@ spring:
 bot:
   name: ${BOT_NAME}
   token: ${BOT_TOKEN}
+
+job:
+  timeZone: ${JOB_TIME_ZONE:Europe/Kiev}
