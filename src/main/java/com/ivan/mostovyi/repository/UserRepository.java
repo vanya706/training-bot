@@ -1,8 +1,13 @@
 package com.ivan.mostovyi.repository;
 
+import com.ivan.mostovyi.constant.UserState;
 import com.ivan.mostovyi.domain.User;
 import org.springframework.data.repository.CrudRepository;
 
-public interface UserRepository extends CrudRepository<User, String> {
+import java.util.Optional;
+
+public interface UserRepository extends CrudRepository<User, Long> {
+
+    Optional<UserState> findStateByIdAndChatId(Long id, Long chatId);
 
 }
