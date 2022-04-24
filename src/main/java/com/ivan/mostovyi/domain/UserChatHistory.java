@@ -5,24 +5,22 @@ import lombok.Getter;
 import lombok.Setter;
 
 import javax.persistence.*;
-import java.util.List;
 
 @Getter
 @Setter
 @Entity
-@Table(name = "telegram_user")
-public class User {
+public class UserChatHistory {
 
     @Id
+    @GeneratedValue
     private Long id;
 
     @Column(nullable = false)
-    private Long chatId;
-
     @Enumerated(EnumType.STRING)
-    private UserState state;
+    private UserState userState;
 
-    @OneToMany(mappedBy = "user")
-    private List<UserChatHistory> userChatHistories;
+    @ManyToOne(fetch = FetchType.LAZY, optional = false)
+    @JoinColumn(nullable = false)
+    private User user;
 
 }

@@ -2,6 +2,7 @@ package com.ivan.mostovyi.bot.handler;
 
 import com.ivan.mostovyi.constant.UserState;
 import com.ivan.mostovyi.helper.ResourceBundleHelper;
+import com.ivan.mostovyi.service.UserChatHistoryService;
 import com.ivan.mostovyi.service.UserService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
@@ -16,6 +17,8 @@ import java.util.List;
 @Component
 @RequiredArgsConstructor
 public class IncomingMessageHandler {
+
+    private final UserChatHistoryService userChatHistoryService;
 
     private final ResourceBundleHelper resourceBundleHelper;
 
