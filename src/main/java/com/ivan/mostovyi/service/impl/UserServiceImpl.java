@@ -32,10 +32,10 @@ public class UserServiceImpl implements UserService {
     }
 
     private User getUserFromMessage(Message message) {
-        return new User() {{
-            setId(message.getFrom().getId());
-            setChatId(message.getChatId());
-        }};
+        return User.builder()
+                .id(message.getFrom().getId())
+                .chatId(message.getChatId())
+                .build();
     }
 
 }
