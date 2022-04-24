@@ -16,6 +16,11 @@ public class UserServiceImpl implements UserService {
 
 
     @Override
+    public User getUser(Message message) {
+        return getUserOrThrow(message.getFrom().getId());
+    }
+
+    @Override
     public UserState getUserState(Long userId, Long chatId) {
         return repository.findStateByIdAndChatId(userId, chatId)
                 .orElse(UserState.START);
@@ -36,6 +41,11 @@ public class UserServiceImpl implements UserService {
                 .id(message.getFrom().getId())
                 .chatId(message.getChatId())
                 .build();
+    }
+
+    private User getUserOrThrow(Long id) {
+        return repository.findById(id)
+                .orElseThrow();
     }
 
 }

@@ -28,28 +28,33 @@ public class IncomingMessageHandler {
     public List<SendMessage> handleIncomingMessage(Message message) {
         UserState userState = userService.getUserState(message.getFrom().getId(), message.getChatId());
 
+        if (message.getText().equals(getRunCommand(message))) {
+            return onRunChosen(message);
+        }
+        if (message.getText().equals(getBarsCommand(message))) {
+            return onBarsChosen(message);
+        }
+        if (message.getText().equals(getHorizontalBarCommand(message))) {
+            return onHorizontalBarChosen(message);
+        }
+
         switch (userState) {
             case START:
             case HELP:
-                if (message.getText().equals(getRunCommand(message))) {
-                    return onRunChosen(message);
-                }
-                if (message.getText().equals(getBarsCommand(message))) {
-                    return onBarsChosen(message);
-                }
-                if (message.getText().equals(getHorizontalBarCommand(message))) {
-                    return onHorizontalBarChosen(message);
-                }
                 return onMenuChosen(message);
             case HORIZONTAL_BAR:
-                break;
             case BARS:
-                break;
             case RUN:
+                addUserChatMessageToHistory(message, userState);
                 break;
         }
         return List.of();
     }
+
+    private void addUserChatMessageToHistory(Message message, UserState userState) {
+        userChatHistoryService.create(message, userState);
+    }
+
 
     private List<SendMessage> onHorizontalBarChosen(Message message) {
         userService.setUserState(message, UserState.HORIZONTAL_BAR);
