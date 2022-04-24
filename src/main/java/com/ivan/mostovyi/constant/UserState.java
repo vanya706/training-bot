@@ -1,5 +1,5 @@
 package com.ivan.mostovyi.constant;
 
-public enum BotState {
+public enum UserState {
   START, HELP, HORIZONTAL_BAR, BARS, RUN
 }
