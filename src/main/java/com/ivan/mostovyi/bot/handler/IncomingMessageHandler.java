@@ -22,7 +22,7 @@ public class IncomingMessageHandler {
     private final UserService userService;
 
 
-    public SendMessage handleIncomingMessage(Message message) {
+    public List<SendMessage> handleIncomingMessage(Message message) {
         UserState userState = userService.getUserState(message.getFrom().getId(), message.getChatId());
 
         switch (userState) {
@@ -45,22 +45,22 @@ public class IncomingMessageHandler {
             case RUN:
                 break;
         }
-        return null;
+        return List.of();
     }
 
-    private SendMessage onHorizontalBarChosen(Message message) {
+    private List<SendMessage> onHorizontalBarChosen(Message message) {
         userService.setUserState(message, UserState.HORIZONTAL_BAR);
         return null;
     }
 
-    private SendMessage onBarsChosen(Message message) {
+    private List<SendMessage> onBarsChosen(Message message) {
         userService.setUserState(message, UserState.BARS);
         return null;
     }
 
-    private SendMessage onRunChosen(Message message) {
+    private List<SendMessage> onRunChosen(Message message) {
         userService.setUserState(message, UserState.RUN);
-        return null;
+        return List.of();
     }
 
     private String getRunCommand(Message message) {
@@ -75,14 +75,14 @@ public class IncomingMessageHandler {
         return resourceBundleHelper.getLocalizedString("bars", message.getFrom().getLanguageCode());
     }
 
-    private SendMessage onMenuChosen(Message message) {
-        return new SendMessage() {{
+    private List<SendMessage> onMenuChosen(Message message) {
+        return List.of(new SendMessage() {{
             enableMarkdown(true);
             setReplyMarkup(getMenuKeyboard(message.getFrom().getLanguageCode()));
             setReplyToMessageId(message.getMessageId());
             setChatId(String.valueOf(message.getChatId()));
             setText("Please select what are you do");
-        }};
+        }});
     }
 
     private ReplyKeyboardMarkup getMenuKeyboard(String locale) {

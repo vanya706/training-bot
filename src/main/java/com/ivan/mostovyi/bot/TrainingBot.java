@@ -10,6 +10,8 @@ import org.telegram.telegrambots.meta.api.methods.send.SendMessage;
 import org.telegram.telegrambots.meta.api.objects.Message;
 import org.telegram.telegrambots.meta.api.objects.Update;
 
+import java.util.List;
+
 @Slf4j
 @Component
 @RequiredArgsConstructor
@@ -29,8 +31,8 @@ public class TrainingBot extends TelegramLongPollingBot {
       if (update.hasMessage()) {
         Message message = update.getMessage();
         if (message.hasText() || message.hasLocation()) {
-          SendMessage outcomeMessage = incomingMessageHandler.handleIncomingMessage(message);
-          if (outcomeMessage != null) {
+          List<SendMessage> outcomeMessages = incomingMessageHandler.handleIncomingMessage(message);
+          for (SendMessage outcomeMessage : outcomeMessages) {
             execute(outcomeMessage);
           }
         }
