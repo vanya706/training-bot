@@ -53,12 +53,12 @@ public class IncomingMessageHandler {
 
     private List<SendMessage> onHorizontalBarChosen(Message message) {
         userService.setUserState(message, UserState.HORIZONTAL_BAR);
-        return null;
+        return List.of();
     }
 
     private List<SendMessage> onBarsChosen(Message message) {
         userService.setUserState(message, UserState.BARS);
-        return null;
+        return List.of();
     }
 
     private List<SendMessage> onRunChosen(Message message) {
