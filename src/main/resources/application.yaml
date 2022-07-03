@@ -14,3 +14,7 @@ bot:
 
 job:
   timeZone: ${JOB_TIME_ZONE:Europe/Kiev}
+
+telegram:
+  externalUrl: ${EXTERNAL_URL:https://c9c4-194-44-46-60.eu.ngrok.io}
+  internalUrl: ${INTERNAL_URL:http://localhost:80}

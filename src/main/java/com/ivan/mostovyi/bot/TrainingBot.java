@@ -5,51 +5,57 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
-import org.telegram.telegrambots.bots.TelegramLongPollingBot;
+import org.telegram.telegrambots.bots.TelegramWebhookBot;
+import org.telegram.telegrambots.meta.api.methods.BotApiMethod;
 import org.telegram.telegrambots.meta.api.methods.send.SendMessage;
 import org.telegram.telegrambots.meta.api.objects.Message;
 import org.telegram.telegrambots.meta.api.objects.Update;
 
-import java.util.List;
+import java.util.Optional;
 
 @Slf4j
 @Component
 @RequiredArgsConstructor
-public class TrainingBot extends TelegramLongPollingBot {
+public class TrainingBot extends TelegramWebhookBot {
 
-  @Value("${bot.name}")
-  private String botName;
+    @Value("${bot.name}")
+    private String botName;
 
-  @Value("${bot.token}")
-  private String botToken;
+    @Value("${bot.token}")
+    private String botToken;
 
-  private final IncomingMessageHandler incomingMessageHandler;
+    private final IncomingMessageHandler incomingMessageHandler;
 
-  @Override
-  public void onUpdateReceived(Update update) {
-    try {
-      if (update.hasMessage()) {
-        Message message = update.getMessage();
-        if (message.hasText() || message.hasLocation()) {
-          List<SendMessage> outcomeMessages = incomingMessageHandler.handleIncomingMessage(message);
-          for (SendMessage outcomeMessage : outcomeMessages) {
-            execute(outcomeMessage);
-          }
+
+    @Override
+    public BotApiMethod<?> onWebhookUpdateReceived(Update update) {
+        try {
+            if (update.hasMessage()) {
+                Message message = update.getMessage();
+                if (message.hasText()) {
+                    Optional<SendMessage> outcomeMessage = incomingMessageHandler.handleIncomingMessage(message);
+                    return outcomeMessage.orElse(null);
+                }
+            }
+        } catch (Exception e) {
+            LOG.error(e.getMessage(), e);
         }
-      }
-    } catch (Exception e) {
-      LOG.error(e.getMessage(), e);
+        return null;
     }
-  }
 
-  @Override
-  public String getBotUsername() {
-    return botName;
-  }
+    @Override
+    public String getBotUsername() {
+        return botName;
+    }
 
-  @Override
-  public String getBotToken() {
-    return botToken;
-  }
+    @Override
+    public String getBotToken() {
+        return botToken;
+    }
+
+    @Override
+    public String getBotPath() {
+        return "bot";
+    }
 
 }
