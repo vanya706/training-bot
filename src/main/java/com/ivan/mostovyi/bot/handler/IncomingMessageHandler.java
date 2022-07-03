@@ -49,7 +49,7 @@ public class IncomingMessageHandler {
                 addUserChatMessageToHistory(message, userState);
                 break;
         }
-        return Optional.empty();
+        return Optional.of(defaultSuccessResponseMessage(message));
     }
 
     private void addUserChatMessageToHistory(Message message, UserState userState) {
@@ -59,17 +59,17 @@ public class IncomingMessageHandler {
 
     private Optional<SendMessage> onHorizontalBarChosen(Message message) {
         userService.setUserState(message, UserState.HORIZONTAL_BAR);
-        return Optional.empty();
+        return Optional.of(defaultSuccessResponseMessage(message));
     }
 
     private Optional<SendMessage> onBarsChosen(Message message) {
         userService.setUserState(message, UserState.BARS);
-        return Optional.empty();
+        return Optional.of(defaultSuccessResponseMessage(message));
     }
 
     private Optional<SendMessage> onRunChosen(Message message) {
         userService.setUserState(message, UserState.RUN);
-        return Optional.empty();
+        return Optional.of(defaultSuccessResponseMessage(message));
     }
 
     private String getRunCommand(Message message) {
@@ -110,6 +110,13 @@ public class IncomingMessageHandler {
             keyboard.add(keyboardSecondRow);
             setKeyboard(keyboard);
         }};
+    }
+
+    private SendMessage defaultSuccessResponseMessage(Message message) {
+        SendMessage responseMessage = new SendMessage();
+        responseMessage.setChatId(String.valueOf(message.getChatId()));
+        responseMessage.setText("Okay!");
+        return responseMessage;
     }
 
 }
